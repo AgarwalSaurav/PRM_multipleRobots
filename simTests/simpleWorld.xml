@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<world>
+  <!-- Provide a name and location to the robot file -->
+
+  <!-- 
+  <robot name="robot" file="../mobile_robots/turtlebot/turtlebot.rob" />
+  -->
+  
+
+  <!-- 
+  <robot name="robot" file="../mobile_robots/kobuki/kobuki.rob" /> 
+  -->
+
+  <!-- 
+  <robot name="robot" file="../mobile_robots/unicycle/unicycle.rob" scale="10 1 1" /> 
+  -->
+  <robot name="robot0" file="../mobile_robots/sphero/sphero.rob" /> 
+  <robot name="robot1" file="../mobile_robots/sphero/sphero.rob" /> 
+
+  <!-- Provide the location to the terrain file, the scale, the position 
+       The default size for block.off is 4 X 4 X 0.1. Scale it accordingly -->
+
+  <terrain file="block.off"  scale="2 2 2" translation="0 0 0"/>
+</world>
+

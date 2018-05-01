@@ -1,0 +1,117 @@
+links	"base0" "base1" "base2" "base3" "base4" "base_footprint" "base_link" "camera_rgb_frame" "camera_depth_frame" "camera_depth_optical_frame" "camera_link" "camera_rgb_optical_frame" "caster_back_link" "caster_front_link" "cliff_sensor_front_link" "cliff_sensor_left_link" "cliff_sensor_right_link" "gyro_link" "plate_bottom_link" "plate_middle_link" "plate_top_link" "pole_bottom_0_link" "pole_bottom_1_link" "pole_bottom_2_link" "pole_bottom_3_link" "pole_bottom_4_link" "pole_bottom_5_link" "pole_kinect_0_link" "pole_kinect_1_link" "pole_middle_0_link" "pole_middle_1_link" "pole_middle_2_link" "pole_middle_3_link" "pole_top_0_link" "pole_top_1_link" "pole_top_2_link" "pole_top_3_link" "wheel_left_link" "wheel_right_link" 
+
+parents	-1 0 1 2 3 4 5 6 7 8 7 7 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 
+
+axis	1 0 0	0 1 0	0 0 1	0 0 1	0 1 0	1 0 0	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	0 0 1	
+
+jointtype	p p p r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r 
+
+Tparent	1 0 0	0 1 0	0 0 1	0 0 0 \
+1 0 0	0 1 0	0 0 1	0 0 0 \
+1 0 0	0 1 0	0 0 1	0 0 0 \
+1 0 0	0 1 0	0 0 1	0 0 0 \
+1 0 0	0 1 0	0 0 1	0 0 0 \
+1 0 0	0 1 0	0 0 1	0 0 0 \
+1 0 0	0 1 0	0 0 1	0 0 0.0102 \
+1 0 0	0 1 0	0 0 1	-0.087 -0.0125 0.287 \
+1 0 0	0 1 0	0 0 1	0 0.025 0 \
+4.89664e-12 4.89658e-12 1	-1 0 4.89658e-12	5.55112e-17 -1 4.89664e-12	0 0 0 \
+1 0 0	0 1 0	0 0 1	-0.031 0.0125 -0.016 \
+4.89664e-12 4.89658e-12 1	-1 0 4.89658e-12	5.55112e-17 -1 4.89664e-12	0 0 0 \
+1 -0 0	0 4.89664e-12 1	-0 -1 4.89664e-12	-0.135 0 0.009 \
+1 -0 0	0 4.89664e-12 1	-0 -1 4.89664e-12	0.115 0 0.007 \
+4.89664e-12 0 1	0 1 0	-1 0 4.89664e-12	0.156 0 0.0214 \
+4.89664e-12 0 1	0 1 0	-1 0 4.89664e-12	0.08734 0.13601 0.0214 \
+4.89664e-12 0 1	0 1 0	-1 0 4.89664e-12	0.085 -0.13601 0.0214 \
+1 0 0	0 1 0	0 0 1	0.056 0.062 0.0202 \
+1 0 0	0 1 0	0 0 1	0.02364 0 0.1306 \
+1 0 0	0 1 0	0 0 1	-0.01364 0 0.1874 \
+1 0 0	0 1 0	0 0 1	-0.01364 0 0.3966 \
+1 0 0	0 1 0	0 0 1	0.12 0.082 0.1028 \
+1 0 0	0 1 0	0 0 1	0.055 0.12 0.1028 \
+1 0 0	0 1 0	0 0 1	-0.055 0.12 0.1028 \
+1 0 0	0 1 0	0 0 1	0.12 -0.082 0.1028 \
+1 0 0	0 1 0	0 0 1	0.055 -0.12 0.1028 \
+1 0 0	0 1 0	0 0 1	-0.055 -0.12 0.1028 \
+1 0 0	0 1 0	0 0 1	-0.1024 0.098 0.2372 \
+1 0 0	0 1 0	0 0 1	-0.1024 -0.098 0.2372 \
+1 0 0	0 1 0	0 0 1	0.0381 0.1505 0.164 \
+1 0 0	0 1 0	0 0 1	0.0381 -0.1505 0.164 \
+1 0 0	0 1 0	0 0 1	-0.0381 0.1505 0.164 \
+1 0 0	0 1 0	0 0 1	-0.0381 -0.1505 0.164 \
+1 0 0	0 1 0	0 0 1	0.0381 0.1505 0.292 \
+1 0 0	0 1 0	0 0 1	0.0381 -0.1505 0.292 \
+1 0 0	0 1 0	0 0 1	-0.0381 0.1505 0.292 \
+1 0 0	0 1 0	0 0 1	-0.0381 -0.1505 0.292 \
+1 -0 0	0 4.89664e-12 1	-0 -1 4.89664e-12	0 0.115 0.025 \
+1 -0 0	0 4.89664e-12 1	-0 -1 4.89664e-12	0 -0.115 0.025
+
+q	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+qmin	-inf -inf -inf -inf -inf -inf 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -inf -inf 
+
+qmax	inf inf inf inf inf inf 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 inf inf 
+
+geometry	"" "" "" "" "" "" "base_link.tri" "" "" "" "camera_link.tri" "" "caster_back_link.tri" "caster_front_link.tri" "" "" "" "" "plate_bottom_link.tri" "plate_middle_link.tri" "plate_top_link.tri" "pole_bottom_0_link.tri" "pole_bottom_1_link.tri" "pole_bottom_2_link.tri" "pole_bottom_3_link.tri" "pole_bottom_4_link.tri" "pole_bottom_5_link.tri" "pole_kinect_0_link.tri" "pole_kinect_1_link.tri" "pole_middle_0_link.tri" "pole_middle_1_link.tri" "pole_middle_2_link.tri" "pole_middle_3_link.tri" "pole_top_0_link.tri" "pole_top_1_link.tri" "pole_top_2_link.tri" "pole_top_3_link.tri" "wheel_left_link.tri" "wheel_right_link.tri" 
+
+mass	0 0 0 0 0 0.0001 2.4 0.001 0.001 0.001 0.001 0.001 0.01 0.01 0.0001 0.0001 0.0001 0.001 0.01 0.01 0.01 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.001 0.01 0.01 
+
+com	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	0 0 0	
+
+inertia	0 0 0 0 0 0 0 0 0	0 0 0 0 0 0 0 0 0	0 0 0 0 0 0 0 0 0	0 0 0 0 0 0 0 0 0	0 0 0 0 0 0 0 0 0	1e-08 0 0 0 1e-08 0 0 0 1e-08	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.001 0 0 0 0.001 0 0 0 0.001	0.001 0 0 0 0.001 0 0 0 0.001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 1e-06 0 0 0 0.0001	0.01 0 0 0 0.01 0 0 0 0.01	0.01 0 0 0 0.01 0 0 0 0.01	0.01 0 0 0 0.01 0 0 0 0.01	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.0001 0 0 0 0.0001 0 0 0 0.0001	0.001 0 0 0 0.001 0 0 0 0.001	0.001 0 0 0 0.001 0 0 0 0.001	
+
+torquemax	0 0 0 0 0 0 inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf inf 
+
+velmax	inf inf inf inf inf inf 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 inf inf 
+
+accmax	inf inf inf inf inf inf 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 100 100 
+
+
+joint floating 5 -1
+joint weld 6
+joint weld 7
+joint weld 8
+joint weld 9
+joint weld 10
+joint weld 11
+joint weld 12
+joint weld 13
+joint weld 14
+joint weld 15
+joint weld 16
+joint weld 17
+joint weld 18
+joint weld 19
+joint weld 20
+joint weld 21
+joint weld 22
+joint weld 23
+joint weld 24
+joint weld 25
+joint weld 26
+joint weld 27
+joint weld 28
+joint weld 29
+joint weld 30
+joint weld 31
+joint weld 32
+joint weld 33
+joint weld 34
+joint weld 35
+joint weld 36
+joint spin 37
+joint spin 38
+
+
+driver normal 37
+driver normal 38
+
+
+servoP	100 100 
+servoI	0 0 
+servoD	10 10 
+
+dryFriction	0 0 
+viscousFriction	0 0 
+
+noselfcollision
