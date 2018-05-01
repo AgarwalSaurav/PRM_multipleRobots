@@ -9,6 +9,7 @@ from Env import Env
 from mpl_toolkits.mplot3d import Axes3D
 from klampt import vis
 
+
 if __name__ == "__main__":
     if len(sys.argv)<=1:
         print "USAGE: kinematicSim.py [world_file]"

@@ -74,10 +74,10 @@ def getDoubleRoomWindow(world, dimX, dimY, dimZ, color = [0.85, 0.85, 0.85, 1], 
     w2 = getWall(wall_thickness, dimY, dimZ, [-x2, -y2, 0], 0)
     w3 = getWall(dimX, wall_thickness, dimZ, [-x2, y2, 0], 0)
     w4 = getWall(wall_thickness, dimY, dimZ, [x2, -y2, 0], 0)
-    w5 = getWall(dimX, wall_thickness*10, z3, [-x2, 0, 0], 0)
-    w6 = getWall(3*x8, wall_thickness*10, z3, [-x2, 0, z3], 0)
-    w7 = getWall(3*x8, wall_thickness*10, z3, [x8, 0, z3], 0)
-    w8 = getWall(dimX, wall_thickness*10, z3, [-x2, 0, 2.0*z3], 0)
+    w5 = getWall(dimX, wall_thickness*20, z3, [-x2, -wall_thickness*10, 0], 0)
+    w6 = getWall(3*x8, wall_thickness*20, z3, [-x2, -wall_thickness*10, z3], 0)
+    w7 = getWall(3*x8, wall_thickness*20, z3, [x8, -wall_thickness*10, z3], 0)
+    w8 = getWall(dimX, wall_thickness*20, z3, [-x2, -wall_thickness*10, 2.0*z3], 0)
     DRDgeom = Geometry3D()
     DRDgeom.setGroup()
     for i,elem in enumerate([w1, w2, w3, w4, w5, w6, w7, w8]):
@@ -90,6 +90,18 @@ def getDoubleRoomWindow(world, dimX, dimY, dimZ, color = [0.85, 0.85, 0.85, 1], 
     b = color[2]
     alpha = color[3]
     drd_setup.appearance().setColor(r, g, b, alpha)
+    b1 = getWall(.4, .4, .5, [-0.75, -0.75, 0.1], 0)
+    box1 = world.makeRigidObject("Box1")
+    box1.geometry().set(b1)
+    b2 = getWall(.3, .3, .5, [0.8, 0.8, 0.1], 0)
+    box2 = world.makeRigidObject("Box2")
+    box2.geometry().set(b2)
+    b3 = getWall(.5, .5, .5, [1.5, 1.5, 0.1], 0)
+    box3 = world.makeRigidObject("Box3")
+    box3.geometry().set(b3)
+    b4 = getWall(.5, .5, .5, [-1.5, -1.5, 0.1], 0)
+    box4 = world.makeRigidObject("Box4")
+    box4.geometry().set(b4)
 
 def myEnviron(world, dimX, dimY, dimZ, color = [0.85, 0.85, 0.85, 1], wall_thickness = 0.01):
     x2 = dimX/2.0

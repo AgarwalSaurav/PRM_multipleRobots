@@ -38,7 +38,7 @@ class sphero6DoF(object):
             trans = self.getTransform()
             rotMat = trans[0]
             pt = trans[1]
-            self.vis.add(self.robotName,[rotMat, pt], keepAppearance=True)
+            #self.vis.add(self.robotName,[rotMat, pt], keepAppearance=True)
         
     def getTransform(self):
         q = self.robot.getConfig()

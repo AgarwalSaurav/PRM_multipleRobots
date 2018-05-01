@@ -25,12 +25,15 @@ from kobuki import kobuki
 from turtlebot import turtlebot
 from decimal import Decimal
 from klampt.math import vectorops
+from klampt.math import so3
+import mathUtils
 
 class Env():
 
     def __init__(self, fn):
         ## Creates a world and loads all the items on the command line
         self.world = WorldModel()
+        self.robotSystemName = 'O'
 
         for f in fn:
             print(f)
@@ -41,7 +44,9 @@ class Env():
 
         coordinates.setWorldModel(self.world)
 
+        vis.lock()
         bW.getDoubleRoomWindow(self.world, 8, 8, 1)
+        vis.unlock()
 
         ## Add the world to the visualizer
         vis.add("world", self.world)
@@ -53,10 +58,12 @@ class Env():
         self.robots = []
         self.n = self.world.numRobots();
         for i in range(self.n):
-            self.robots.append(sphero6DoF(self.world.robot(i), self.world.robot(i).getName(),  vis))
+            self.robots.append(sphero6DoF(self.world.robot(i), self.world.robot(i).getName()))
 
         self.eps = 0.000001
         self.sj = [[0, 0, 0], [0.2, 0, 0]]
+        self.sjStar = [[-0.070534,-0.097082, 0],[0,-0.06, 0],[0.070534,-0.097082, 0],[0.057063,-0.018541, 0],[0.11413,0.037082, 0],[0.035267,0.048541, 0],[0,0.12, 0],[-0.035267,0.048541, 0],[-0.11413,0.037082, 0],[-0.057063,-0.018541, 0]] 
+        self.sj = self.sjStar
         self.xB = [-4, 4]
         self.yB = [-4, 4]
         self.zB = [0.02, 1]
@@ -79,7 +86,6 @@ class Env():
                 for j in range(self.n):
                     if i != j:
                         dist = vectorops.norm(vectorops.sub(self.sj[i], self.sj[j]))
-                        self.sumDist += dist
                         if dist < minSij:
                             minSij = dist
                         dist =  math.fabs(self.sj[i][0] - self.sj[j][0])
@@ -88,6 +94,8 @@ class Env():
                         dist =  math.fabs(self.sj[i][1] - self.sj[j][1])
                         if dist < minSijY:
                             minSijY = dist
+            for i in range(self.n):
+                self.sumDist += vectorops.norm(self.sj[i])
 
             if minSij > self.eps:
                 self.scMin = 2 * math.sqrt(2) * self.rad / minSij
@@ -97,14 +105,20 @@ class Env():
                 self.scYMin = 2 * math.sqrt(2) * self.rad / minSijY
         self.scMax = max(2, self.scMin)
         self.scB = [self.scMin, self.scMax]
+        print('Minimum scale')
+        print(self.scMin)
 
 
+        vis.add(self.robotSystemName,[so3.identity(), [10, 10, -10]])
+        vis.setAttribute(self.robotSystemName, "size", 12)
+        vis.edit(self.robotSystemName)
 
+        vis.add("WCS",[so3.identity(),[0,0,0]])
+        vis.setAttribute("WCS", "size", 32)
+        vis.edit("WCS")
         self.collisionChecker = collide.WorldCollider(self.world)
         if self.showVis:
             ## Display the world coordinate system
-            vis.add("WCS",[so3.identity(),[0,0,0]])
-            vis.setAttribute("WCS", "size", 24)
 
             vis.addText("textCol", "No collision")
             vis.setAttribute("textCol","size",24)
@@ -124,6 +138,7 @@ class Env():
         oldTime = startTime
     
         self.setConfig(0, 0, 1, 1, 0)
+
         q = self.robots[0].getConfig()
         if self.showVis:
             q2f = [ '{0:.2f}'.format(elem) for elem in q]
@@ -193,6 +208,9 @@ class Env():
         sinTht = math.sin(tht)
 
         vis.lock()
+        pt = [x, y, z]
+        rotMat = mathUtils.euler_zyx_mat([tht, 0, 0])
+        vis.add(self.robotSystemName,[rotMat, pt])
         for iR in range(self.n):
             q = self.robots[iR].getConfig()
 

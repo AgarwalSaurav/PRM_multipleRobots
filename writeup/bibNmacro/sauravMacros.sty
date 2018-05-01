@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}     % Not really necessary
+\ProvidesPackage{./bibNmacro/sauravMacros}
+
+\RequirePackage{amsmath} 
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{xspace}
+\RequirePackage{color}
+
+
+\newcommand{\sac}[1]{{\color{blue!80!black} [Saurav: {\em #1}]}\xspace}
+\newcommand{\sak}[1]{{\color{red!80!black} [Srinivas: {\em #1}]}\xspace}
+\newcommand{\mv}[1]{\mathbf{#1}}
+\newcommand{\bs}[1]{{\boldsymbol{#1}}}
+\newcommand{\vn}[1]{#1^{\top}#1}
+\newcommand{\vnt}[2]{#1^{\top}#2}
+\newcommand{\sumn}[1]{\sum_{#1=1}^{n}}
+\newcommand{\norm}[1]{\lVert {#1} \rVert}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}[lem]{Corollary}
+%\newtheorem{theorem}{Theorem}[section]
+\newtheorem{theorem}[lem]{Theorem}
+
+\newenvironment{mytheory}[1]{%
+}{}
+
+\endinput

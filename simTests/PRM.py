@@ -12,7 +12,7 @@ from klampt import vis
 from klampt.model import trajectory
 
 class PRM():
-    def __init__(self, env, maxSample = 500, maxConnect = 15, maxDist = 2.5, localSteps = 20):
+    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 6.5, localSteps = 20):
         print('Initializing PRM')
         self.maxSample = maxSample
         self.maxConnect = maxConnect
@@ -27,20 +27,23 @@ class PRM():
         x = self.envBounds[0][0] + random.random() * (self.envBounds[0][1] - self.envBounds[0][0])
         y = self.envBounds[1][0] + random.random() * (self.envBounds[1][1] - self.envBounds[1][0])
         z = self.envBounds[2][0] + random.random() * (self.envBounds[2][1] - self.envBounds[2][0])
+        #z = 0.2
         sc = self.envBounds[3][0] + random.random() * (self.envBounds[3][1] - self.envBounds[3][0])
+        #sc = 2
         tht = random.random() * (2 * math.pi)
+        #tht = 0
         newNode = nd(x, y, z, sc, tht)
         return newNode
     
     def distMetric(self, n1, n2):
         dist = self.env.n * vectorops.norm(vectorops.sub([n1.x, n1.y, n1.z], [n2.x, n2.y, n2.z]))
         dist += self.env.sumDist * math.fabs(n1.sc - n2.sc)
-        dist += self.env.sumDist * math.fabs(n1.sc + n2.sc)/2 * math.fabs(n1.tht - n2.tht)
+        dist += 1 * self.env.sumDist * math.fabs(n1.sc + n2.sc)/2 * math.fabs(n1.tht - n2.tht)
         return dist
 
     def localPlanner(self, n1, n2, sleepFlag = False):
         dist = self.env.n * vectorops.norm(vectorops.sub([n1.x, n1.y, n1.z], [n2.x, n2.y, n2.z]))
-        vel = 0.08
+        vel = 0.04
         tm = dist/vel
 
         for i in range(int(tm)):
@@ -58,7 +61,7 @@ class PRM():
             if (colFlag):
                 return False
             if sleepFlag:
-                time.sleep(vel)
+                time.sleep(vel/4)
         return True
 
     def runPRM(self):
@@ -69,7 +72,7 @@ class PRM():
             if i%100 == 0:
                 print(i)
             n1 = self.getSample()
-            numNodes = self.G.number_of_nodes()
+            numNodes = nx.number_of_nodes(self.G)
             if numNodes == 0:
                 self.G.add_node(n1)
                 continue
@@ -99,6 +102,7 @@ class PRM():
                     break
                 e = [(n1, sorted_by_dist[j][0], sorted_by_dist[j][1])]
                 self.G.add_weighted_edges_from(e)
+        self.expansionPRM()
 
     def visRoadMap(self):
 
@@ -146,10 +150,11 @@ class PRM():
             return False
 
         try:
-            shortest_path = nx.shortest_path(self.G, source=minNodeI, target=minNodeG)
+            shortest_path = nx.dijkstra_path(self.G, source=minNodeI, target=minNodeG)
         except:
             return False
         
+        shortest_path = self.smoothPath(shortest_path)
         vis.show()
         
         vis.add("Initial configuration", [qI.x, qI.y, qI.z])
@@ -206,9 +211,73 @@ class PRM():
             fName = "p" + str(i)
             vis.remove(fName)
 
+    def smoothPath(self, shortest_path):
+        pathLength = len(shortest_path)
+        nTries = pathLength/20
+        for i in range(nTries):
+            n1Id = random.randint(0, pathLength - 2)
+            n2Id = random.randint(n1Id + 1, pathLength - 1)
+            n1 = shortest_path[n1Id] 
+            n2 = shortest_path[n2Id] 
+            if (self.localPlanner(n1, n2)):
+                newPath = []
+                for j in range(n1Id + 1):
+                    newPath.append(shortest_path[j])
+                for j in range(n2Id, pathLength):
+                    newPath.append(shortest_path[j])
+                shortest_path = newPath[:]
+                pathLength = len(shortest_path)
+            pathLength = len(shortest_path)
+        for i in range(len(shortest_path)/2):
+            pathLength = len(shortest_path)
+            for j in range(pathLength - 2):
+                if j >= pathLength - 2:
+                    break
+                n1 = shortest_path[j] 
+                n2 = shortest_path[j + 2] 
+                if (self.localPlanner(n1, n2)):
+                    newPath = []
+                    for j1 in range(j + 1):
+                        newPath.append(shortest_path[j1])
+                    for j1 in range(j + 2, pathLength):
+                        newPath.append(shortest_path[j1])
+                    shortest_path = newPath[:]
+                    pathLength = len(shortest_path)
 
 
+        return shortest_path
 
+    def expansionPRM(self):
+        nTries = nx.number_connected_components(self.G)/10
+        for i in range(nTries):
+            smallest_cc = min(nx.connected_components(self.G), key=len)
+            n1 = random.choice(tuple(smallest_cc))
+
+            potentialEdges = []
+
+            connectComps = nx.connected_components(self.G)
+            nConnectedComps = nx.number_connected_components(self.G) 
+            for c in connectComps:
+                minNode_c = None
+                minDist_c = 100000
+                for nodeG in c:
+                    dist = self.distMetric(nodeG, n1)
+                    if dist < 5*self.maxDist:
+                        if(self.localPlanner(n1, nodeG)):
+                            if (minDist_c > dist):
+                                minNode_c = nodeG
+                                minDist_c = dist
+                if minNode_c != None:
+                    potentialEdges.append((minNode_c, minDist_c))
+
+            sorted_by_dist = sorted(potentialEdges, key=lambda tup: tup[1])
+            count = 0
+            for j in range(len(sorted_by_dist)):
+                count = count + 1 
+                if count > self.maxConnect:
+                    break
+                e = [(n1, sorted_by_dist[j][0], sorted_by_dist[j][1])]
+                self.G.add_weighted_edges_from(e)
 
 
 
