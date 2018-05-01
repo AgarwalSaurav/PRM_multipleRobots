@@ -1,9 +1,9 @@
-# Kinematic simulations using Klampt
+# Path Planning for Multiple Robots with Variable Formation Using Probabilistic Road Map
 
 ### Execution:
 ```
 cd simTests
-python kinematicSim.py simpleWorld.xml
+python prm_main.py simpleWorld.xml
 ```
 
 ### Robot files
