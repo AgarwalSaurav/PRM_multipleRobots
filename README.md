@@ -1,5 +1,10 @@
 # Path Planning for Multiple Robots with Variable Formation Using Probabilistic Road Map
 
+Please download latest version using 
+```
+git clone https://github.com/AgarwalSaurav/PRM_multipleRobots.git
+```
+
 ### Execution:
 ```
 cd simTests
