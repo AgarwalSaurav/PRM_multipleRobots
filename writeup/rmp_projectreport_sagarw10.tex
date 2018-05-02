@@ -278,11 +278,33 @@ The total distance between two configurations $d(\mv q_1, \mv q_2)$ is given bel
 Note that the distance is now a function of number of robots. Weights can be added to
 each of the terms depending on the application.
 \subsection{Local Path Planning}
+The PRM algorithm requires a local path planner which takes in two configurations and
+checks whether a path exists in free space. The local planner needs to be deterministic
+and computationally very efficient. We use a simple straight line motion between the two
+configurations. We then discretize the path into small steps and check for collisions at
+these steps. It is important that the number of steps be carefully chosen to ensure that
+no collision is missed by the planner.
 
 \subsection{Learning Phase}
 The task of the learning phase is to build a roadmap. It is composed of two steps: (1)~the construction step and (2)~the expansion step. The construction step creates a reasonably connected graph whereas the exapansion step takes in the result of the construction step and tries to improve connectivity by adding nodes to the neighborhood of low connectivity regions.
 \subsubsection{The Construction Step}
-The construction step starts with initializing an empty undirected graph $G=(V,E)$. A new configuration~$\mv q_s$ is randomly sampled in the configuration space~$\mathcal C$ is checked if $\mv q_s$ is in the free configuration space~$\mathcal C_f$. These sampled points are added to the roadmap $G$. Then the algorithm tries to connect $\mv q_s$ to atmost $k$ nearest existing nodes in the graph which is within some predefined distance~${\texttt {maxDist}}$. It is ensured that $\mv q_s$ and potential nodes to which it is to be connected do not lie in the same connected component. This prevents cycles in the graph.
+The construction step starts with initializing an empty undirected graph $G=(V,E)$. A new
+configuration~$\mv q_s$ is randomly sampled in the configuration space~$\mathcal C$ is
+checked if $\mv q_s$ is in the free configuration space~$\mathcal C_f$. These sampled
+points are added to the roadmap $G$. Then the algorithm tries to connect $\mv q_s$ to
+atmost $k$ nearest existing nodes in the graph which is within some predefined
+distance~${\texttt {maxDist}}$. It is ensured that $\mv q_s$ and potential nodes to which
+it is to be connected do not lie in the same connected component. This prevents cycles in
+the graph and reduces the number of edges. A sample roadmap is shown in
+\fgref{fig:roadmap} for one robot.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{prm_roadmap.png}
+  \caption{Roadmap generated using PRM for one robot. The roadmap has 2000 nodes and 1980
+  edges. There are 5 connected components with more than one node. There are 19 nodes
+which remain disconnected.}
+  \label{fig:roadmap}
+\end{figure}
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibNmacro/agarwal_MP}
