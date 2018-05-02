@@ -228,8 +228,55 @@ When the formation rotates by an angle $\theta$ about the $Z$-axis, the motion o
   d_\theta(\mv q_1, \mv q_2) = \sum_{i=1}^n \operatorname{abs}(\theta_1 - \theta_2) ||\mv s_i||_2 = \mv s (\alpha_1 - \alpha_2) 
   \label{eqn:dth}
 \end{equation}
+\subsubsection{Rotation with Scaling}
+We first assume that the rate of rotation and rate of scaling are constants, which may not
+be equal. Furthermore the relative rates for the two parameters is assumed to be constant.
+This means that the two parameters reach their value in the goal configuration at the same
+time, i.e., $b = \frac{dr}{d\theta}$ is constant. Where $dr$ is the rate of increase of radius
+$r$ of individual robots.
 
-
+The radius at any instant is given by $r(\theta) = r_1 + b \theta$. This gives us the
+following derivatives:
+\begin{equation}
+  \begin{split}
+    x &= dr(\theta)\cos\theta\\
+    y &= dr(\theta)\sin\theta\\
+    dx & = (b\cos\theta - \sin \theta r(\theta))d\theta\\
+    dy & = (b\sin\theta + \cos \theta r(\theta))d\theta
+  \end{split}
+  \label{eqn:dstht}
+\end{equation}
+The arc length $l$ is then given by:
+\begin{equation}
+  \begin{split}
+    dl&=\sqrt{dx^2+dy^2}\\
+    &=\sqrt{r(\theta)^2 + b^2}d\theta\\
+    l&= \int_{\theta_1}^{\theta_2} dl
+  \end{split}
+  \label{eqn:arc}
+\end{equation}
+The above equation is difficult to integrate and involve hyperbolic functions, and hence
+is computationally expensive. Hence, an approximation is used by taking the average
+radius. The distance function $d_{s\theta}(\mv q_1, \mv q_2)$ is given by:
+\begin{equation}
+  \begin{split}
+    d_{s\theta}(\mv q_1, \mv q_2) &= \sum_{i=1}^n\operatorname{abs} \left(\frac{(r_{i1} -
+      r_{i2})}{2}(\theta_1 -
+    \theta_2)\right ) \\
+    &=\sum_{i=1}^n \operatorname{abs}\left( ||\mv s_i|| \frac{(\alpha_1
+    -\alpha_2)}{2}(\theta_1-\theta_2) \right)\\
+    &=\frac{\mv s \left|  (\alpha_1 -\alpha_2)(\theta_1-\theta_2) \right|}{2}
+  \end{split}
+  \label{eqn:dsthta}
+\end{equation}
+\subsubsection{Total Distance}
+The total distance between two configurations $d(\mv q_1, \mv q_2)$ is given below:
+\begin{equation}
+  d(\mv q_1, \mv q_2) = d_t +d_s +d_{s\theta}
+  \label{eqn:dF}
+\end{equation}
+Note that the distance is now a function of number of robots. Weights can be added to
+each of the terms depending on the application.
 \subsection{Local Path Planning}
 
 \subsection{Learning Phase}

@@ -23,7 +23,7 @@ for i in range(100):
 envBounds = env.getBounds()
 
 prm = PRM(env)
-prm.runPRM_noCC()
+prm.runPRM()
 G = prm.G
 
 

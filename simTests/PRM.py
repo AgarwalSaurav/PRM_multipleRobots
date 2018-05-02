@@ -12,7 +12,7 @@ from klampt import vis
 from klampt.model import trajectory
 
 class PRM():
-    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 1.5, localSteps = 20):
+    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 6.5, localSteps = 20):
         print('Initializing PRM')
         self.maxSample = maxSample
         self.maxConnect = maxConnect
@@ -31,9 +31,9 @@ class PRM():
         z = self.envBounds[2][0] + random.random() * (self.envBounds[2][1] - self.envBounds[2][0])
         #z = 0.2
         sc = self.envBounds[3][0] + random.random() * (self.envBounds[3][1] - self.envBounds[3][0])
-        sc = 1
+        #sc = 1
         tht = random.random() * (2 * math.pi)
-        tht = 0
+        #tht = 0
         newNode = nd(x, y, z, sc, tht)
         return newNode
     
@@ -371,7 +371,7 @@ class PRM():
     def printGraphStat(self):
 
         print("No. of Nodes: " + str(self.G.number_of_nodes()))
-        print("No. of Edges: " + str(self.G.number_of_edges()))
+        print("No. of Edges: " + str(self.G.number_of_edges() - self.G.number_of_nodes()))
         print("No. of Connected Components: " + str(nx.number_connected_components(self.G)))
 
         connectedComps = nx.connected_components(self.G)
