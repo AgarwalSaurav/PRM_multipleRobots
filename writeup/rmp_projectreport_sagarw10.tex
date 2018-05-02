@@ -24,6 +24,7 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{float}
+\usepackage[]{algorithm2e}
 %\newtheorem{lemma}{Lemma}
 %\newtheorem{remark}{Remark}
 %\usepackage{amsthm}
@@ -76,9 +77,8 @@
 % \parindent 0.25in
 % \lineskip 1pt
 % \normallineskip 1pt
-% \def\baselinestretch{1.5}
+% \def\baseltioinestretch{1.5}
 %\newcommand{\meqref}[1]{Eqs.(#1)}
-\usepackage{clrscode3e}
 \usepackage[normalem]{ulem}  % for \sout{}
 \graphicspath{{./graphics/}}
 \author{Saurav Agarwal
@@ -95,8 +95,7 @@ Probabilistic Roadmap}\\{\large ITCS-8152: Robot Motion Planning} {\large (Sprin
 %\title{Assignment and Trajectory Planning for Multiple Robots with Variable Goal Formations}
 \maketitle
 %\rhead{Page \thepage \hspace{1pt} of \pageref{LastPage}}
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 %
   The objective of the project is to implement and analyze Probabilistic Road Map (PRM) algorithm for motion planning of multiple robots with variable formation. By variable formation we mean that the robots can change the scale and orientation of the formation while maintaining a given shape. The system of robots hence have five degrees of freedom, i.e., three for translation, scale, and orientation about the $Z$-axis. The PRM algorithm is implemented as it can handle high dimensional configuration space. Additional connectivity, expansion, and smoothing techniques are implemented to improve upon the solutions generated. Examples of different numbers of robots in various shapes are considered to analyze the efficacy of the algorithm. The algorithm is implemented using Python 2.7 and Klamp't motion planning framework.
@@ -112,35 +111,131 @@ Teams of robots often maintain a desired shape while performing tasks such as ex
 coverage, and surveillance~\cite{TurpinMK12ICRA}. These formations can have the
 flexibility in the scale and orientation of the formation while maintaining the given
 shape. These additional degrees of freedom allows us to navigate through narrow passages
-in the environment (see~\fgref{fig:r200}).
+in the environment (see~\fgref{fig:r200}). In this project we study an analyze the
+Probabilistic Roadmap path planning method to perform path planning in
+a static environment with obstacles.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.5\textwidth]{r200_all}
   \caption{An example of a scenario where robots need to change their scale in order to
-  pass through a narrow openning. We need to ensure that the scale parameter is computed
+  pass through a narrow opening. We need to ensure that the scale parameter is computed
   such that the robots do not collide with
 themselves.}
   \label{fig:r200}
 \end{figure}
 
-\subsection{Problem Description}
+
+Several efficient path planning techniques exist for low dimensional configuration space. Roadmap methods in $\mathbb R^2$ include visibility graph, which can give optimal paths, Voronoi
+roadmap which keep the path far away from the obstacles (along the medial axis). Cell
+decomposition methods divide the free configuration space of the robots into cells.
+Thereafter, a connectivity graph is created to with the cells. Given query points, a path
+is found in the connectivity graph. These methods can solve 2D configuration spaces
+efficiently. However, the as the dimension increases, the number of cells increases
+exponentially and both the space and time complexity increases. Potential field methods is
+another class of motion planning technique wherein potential functions dictate the
+motion of the robots. The goal position has an attractive potential and the obstacles
+(potentially other robots as well) have repulsive potential. The forces on the robot are
+then computed based on the potential function. The method suffers from getting stuck at
+local minima and designing potential navigation functions may not be trivial. 
+
+All the algorithms discussed above do not perform well when the dimension of the
+configuration space increases. In general the motion planning problem is PSPACE-hard.
+Owing to this difficult, in the past decade there have been significant advances in
+sampling based techniques. One such method is Probabilistic Roadmap
+(PRM)~\cite{kavrakiSLO96} composed of a
+learning phase and a query phase. The learning phase builds a roadmap and in the query
+phase shortest path in computed in the roadmap. The PRM has been shown to be effective in
+various environments with high dimensional configurations of robots. There have been
+several improvements and variants to PRM. One notable improvement is
+PRM*~\cite{karmanF11IJRR}, which gives asymptotically optimal solutions. Other variants
+are visibility-PRM, Obstacle based-PRM etc.
+
+In this document, we first describe the problem in~Section~\ref{sc:problem}. The PRM
+method is described in Section~\ref{sc:prm}. 
+\section{Problem Description}
+
+\label{sc:problem}
 Consider a team of $n$ robots. These robots are arranged in a desired shape given by $\mv S =(\vsj^\top), j = 1, \ldots n$ with respect to a local coordinate system attached to the system of robots. The configuration of the system of robots is given by a five dimensional vector $\mv q = (x, y, z, \alpha, \theta)^\top$, where $\mv q_t = (x, y, z)^\top$ defines the location in the $\mathbb R^3$ space, $\alpha$ is the scale parameter for the robots, and $\theta$ is the orientation of the formation about the $Z$-axis. The location of the individual robots in the world coordinate system can now be written as $\mv p_j = \mv q_t + \mv R \alpha \vsj$, where $\mv R$ is the rotation matrix corresponding to a rotation by an angle $\theta$ about the $Z$-axis. Given an initial and goal configuration, the task is then to compute an obstacle-free path in the environment.
 
 We assume the following:
 \begin{enumerate}
   \item The robots are holonomic, i.e., they can move in any direction.
-  \item The position of the individual robots, and thereby the position and orientation of the robotic system can be obtained exactly.
+  \item The position of the individual robots, and thereby the position and orientation of
+    the robotic system can be obtained exactly.
   \item The environment in 2D or 3D is static and known, i.e., the location of the obstacles are provided exactly.
   \item There is no error in the motion of the robots, i.e., the robots move exactly as commanded.
 \end{enumerate}
 
-\subsection{Probabilistic Roadmap}
-We use Probabilistic Roadmap (PRM)~\cite{kavrakiSLO96} for creating a {\em roadmap} in the configuration space of the robot. 
-The roadmap here refers to an undirected graph in the configuration space where in the nodes represent configurations and the edges represent collision-free paths which the system of robots can take. 
-The weight of the edges represent the cost of travelling through the two nodes of the edge. 
+\section{Probabilistic Roadmap}
+\label{sc:prm}
+We use Probabilistic Roadmap (PRM), a sampling based technique, for creating a {\em roadmap} in the configuration space of the robot. 
+The roadmap here refers to an undirected graph in the configuration space where in the
+nodes represent sampled configurations and the edges represent collision-free paths which the system of robots can take. 
+The weight of the edges represent the cost of travelling through the two nodes of the
+edge.
 
-The PRM 
+The PRM and its improvement PRM* have the following characteristics which make it suitable for our problem:
+\begin{enumerate}
+  \item Probabilistically complete: probability of finding a solution (if one exist)
+    approaches to one as the running time approaches to infinity. The algorithm will generate a roadmap such that path between any two configuration points can be determined if it exists, given sufficient
+    time for running the algorithm.
+  \item Asymptotically optimal: the probability of find the optimal path (if one exist) approaches to
+    one as the running time approaches infinity. The algorithm will find the most optimal path for the query if sufficient time is given for running building the roadmap.
+  \item The PRM method can handle high-dimensional configuration space. In our problem we
+    have a five dimensional configuration space.
+  \item Once the roadmap is created, the multiple queries can be performed on the same
+    environment, which is computationally very efficient.
+\end{enumerate}
+
+There are few caveats to the PRM method. The probabilistically complete and asymptotically
+optimal features require building an large sized graph with algorithm running for a
+long time. This also creates slower query decisions. However, in practice fewer samples
+points may be enough for generating good paths.
+
+\subsection{Overall Algorithm}
+The PRM method is composed of a {\em learning} phase and a {\em query} phase. In the
+learning phase a roadmap is built. The roadmap is an undirected graph $G=(V, E)$, where
+$N$ is the set of sampled vertices and $E$ is the set of edges representing collision-free
+paths. The query phase of the method is used to solve individual path planning problems
+for the same environment in which the roadmap was built. Given a start/initial
+configuration, $\mv q_i$, and a goal configuration, $\mv q_g$, the query phase first connects
+these nodes to the roadmap and thereafter finds the shortest path in the roadmap between
+the connected configurations.
+
+We shall now describe the two phases and their components specific to our problem.
+\subsection{Distace Metric}
+The PRM method requires a distance metric $d(\mv q_1, \mv q_2)$ to be defined for two configurations $\mv q_1$ and $\mv q_2$. The metric is straight forward for Euclidean space and is given by the Euclidean distance. However, we have a five-dimensional non-Euclidean configuration space. Moreover, there are multiple robots having different motion. We consider the sum of the distance travelled by the robots as the distance metric.
+\subsubsection{Traslation of Formation}
+First let us consider the translation of the system of robots in formation. The translation distance metric $d_t(\mv q_1, \mv q_2)$ is then given by:
+\begin{equation}
+d_t(\mv q_1, \mv q_2) = \sum_{i = 1}^{n} ||\mv q_{t1} - \mv q_{t2}||_2 = n||\mv q_{t1} - \mv q_{t2}||_2
+  \label{eqn:dt}
+\end{equation}
+where, $\mv q_{t1}$ and $\mv q_{t2}$ represent the translation part of the configuration, i.e, $(x, y, z)$.
+
+\subsubsection{Scaling}
+When the formation changes the scale parameter $\alpha$, the motion of the individual robots is in the direction of the vector pointing to its position $\mv s_j$ in local coordinate system of the formation. The scaling distance metric $d_s(\mv q_1, \mv q_2)$ is then given by:
+\begin{equation}
+  d_s(\mv q_1, \mv q_2) = \sum_{i=1}^n (\alpha_1 - \alpha_2) ||\mv s_i||_2 = \mv s (\alpha_1 - \alpha_2), \text {where } \mv s = \sum_{i=1}^n ||\mv s_i||_2
+  \label{eqn:ds}
+\end{equation}
+The constant $\mv s$ can be precomputed.
+
+\subsubsection{Rotation}
+When the formation rotates by an angle $\theta$ about the $Z$-axis, the motion of the individual robots is in a arc of radius given by the distance of its position $\mv s_j$  in the shape in local coordinate system of the formation. The scaling distance metric $d_\theta(\mv q_1, \mv q_2)$ is then given by:
+\begin{equation}
+  d_\theta(\mv q_1, \mv q_2) = \sum_{i=1}^n \operatorname{abs}(\theta_1 - \theta_2) ||\mv s_i||_2 = \mv s (\alpha_1 - \alpha_2) 
+  \label{eqn:dth}
+\end{equation}
+
+
+\subsection{Local Path Planning}
+
+\subsection{Learning Phase}
+The task of the learning phase is to build a roadmap. It is composed of two steps: (1)~the construction step and (2)~the expansion step. The construction step creates a reasonably connected graph whereas the exapansion step takes in the result of the construction step and tries to improve connectivity by adding nodes to the neighborhood of low connectivity regions.
+\subsubsection{The Construction Step}
+The construction step starts with initializing an empty undirected graph $G=(V,E)$. A new configuration~$\mv q_s$ is randomly sampled in the configuration space~$\mathcal C$ is checked if $\mv q_s$ is in the free configuration space~$\mathcal C_f$. These sampled points are added to the roadmap $G$. Then the algorithm tries to connect $\mv q_s$ to atmost $k$ nearest existing nodes in the graph which is within some predefined distance~${\texttt {maxDist}}$. It is ensured that $\mv q_s$ and potential nodes to which it is to be connected do not lie in the same connected component. This prevents cycles in the graph.
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibNmacro/agarwal_MP}

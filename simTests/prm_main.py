@@ -15,6 +15,7 @@ if __name__ == "__main__":
         print "USAGE: kinematicSim.py [world_file]"
         exit()
 
+
 env = Env(sys.argv[1:])
 for i in range(100):
     env.setConfig(-1 + i/float(100), -1, 2, 2, i*3.14/100)
@@ -22,45 +23,38 @@ for i in range(100):
 envBounds = env.getBounds()
 
 prm = PRM(env)
-newNode = prm.getSample()
-prm.runPRM()
-newNode.printNode()
+prm.runPRM_noCC()
 G = prm.G
-prm.visRoadMap()
+
 
 vis.setWindowTitle("Motion Planning Using Probabilistic Road Map")
 
-print "calling dialog()"
-vis.dialog()
 vp = vis.getViewport()
-vp.w,vp.h = 1800,1000
+vp.w,vp.h = 1800,800
+prm.visRoadMap()
+
 while(True):
-    n1 = prm.getSample()
-    n2 = prm.getSample()
-    if not prm.queryPRM(n1, n2):
-        print("Path not found")
-    prm.deletePath()
-    
-time.sleep(60)
+    inText = ''
+    while not (inText == 'y' or inText =='n'):
+        inText = raw_input("Continue (y/n/c) ?")
+    if inText == 'n':
+        break
+    if inText == 'y':
+        prm.deletePath()
+        n1 = prm.getSample()
+        n2 = prm.getSample()
+        n1.printNode()
+        n2.printNode()
+        failCnt = 0
+        while not prm.queryPRM(n1, n2):
+            print("Path not found")
+            n1 = prm.getSample()
+            n2 = prm.getSample()
+            failCnt += 1
+            if failCnt > 100:
+                print("Too many failed queries")
+                break
+
 
 env.endEnv()
-nodeList = list(G)
-edgeList = G.edges()
-#print(nodeList)
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.set_xlabel('X')
-ax.set_ylabel('Y')
-ax.set_zlabel('Z')
-ax.set_xlim(envBounds[0])
-ax.set_ylim(envBounds[1])
-ax.set_zlim(envBounds[2])
-#for e in edgeList:
-#    ax.plot([e[0].x, e[1].x], [e[0].y, e[1].y], zs=[e[0].z, e[1].z])
-#
-
-#plt.subplot(122)
-#nx.draw(G, pos=nx.circular_layout(G), nodecolor='r', edge_color='b')
-#plt.show()
-#
 

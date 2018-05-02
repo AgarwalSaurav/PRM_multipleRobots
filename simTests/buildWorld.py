@@ -103,6 +103,19 @@ def getDoubleRoomWindow(world, dimX, dimY, dimZ, color = [0.85, 0.85, 0.85, 1], 
     box4 = world.makeRigidObject("Box4")
     box4.geometry().set(b4)
 
+    b5 = getWall(.4, .4, .5, [-0.75, 0.75, 0.1], 0)
+    box5 = world.makeRigidObject("Box5")
+    box5.geometry().set(b5)
+    b6 = getWall(.3, .3, .5, [0.8, -0.8, 0.1], 0)
+    box6 = world.makeRigidObject("Box6")
+    box6.geometry().set(b6)
+    b7 = getWall(.5, .5, .5, [1.5, -1.5, 0.1], 0)
+    box7 = world.makeRigidObject("Box7")
+    box7.geometry().set(b7)
+    b8 = getWall(.5, .5, .5, [-1.5, 1.5, 0.1], 0)
+    box8 = world.makeRigidObject("Box8")
+    box8.geometry().set(b8)
+
 def myEnviron(world, dimX, dimY, dimZ, color = [0.85, 0.85, 0.85, 1], wall_thickness = 0.01):
     x2 = dimX/2.0
     y2 = dimY/2.0
