@@ -89,7 +89,8 @@
 }
 \begin{document}
 %\rmdefault
-\title{{\Large \bf Path Planning for Multiple Robots with Variable Formation Using Probabilistic Road Map}\\{\large ITCS-8152: Robot Motion Planning}\\ {\large Spring 2018} }
+\title{{\Large \bf Path Planning for Multiple Robots with Variable Formation Using
+Probabilistic Roadmap}\\{\large ITCS-8152: Robot Motion Planning} {\large (Spring 2018)} }
 %\title{Simultaneous Optimal Assignment and Goal Formation for Multiple Robots}
 %\title{Assignment and Trajectory Planning for Multiple Robots with Variable Goal Formations}
 \maketitle
@@ -107,18 +108,39 @@
 \section{Introduction}
 %\section{Motivation}
 %
-Teams of robots often maintain a desired shape while performing tasks such as exploration, coverage, and surveillance. These formations can have the flexibility in the scale and orientation of the formation while maintaining the given shape. These additional degrees of freedom allows us to navigate through narrow passages in the environment.
+Teams of robots often maintain a desired shape while performing tasks such as exploration,
+coverage, and surveillance~\cite{TurpinMK12ICRA}. These formations can have the
+flexibility in the scale and orientation of the formation while maintaining the given
+shape. These additional degrees of freedom allows us to navigate through narrow passages
+in the environment (see~\fgref{fig:r200}).
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth]{r200_all}
+  \caption{An example of a scenario where robots need to change their scale in order to
+  pass through a narrow openning. We need to ensure that the scale parameter is computed
+  such that the robots do not collide with
+themselves.}
+  \label{fig:r200}
+\end{figure}
+
+\subsection{Problem Description}
 Consider a team of $n$ robots. These robots are arranged in a desired shape given by $\mv S =(\vsj^\top), j = 1, \ldots n$ with respect to a local coordinate system attached to the system of robots. The configuration of the system of robots is given by a five dimensional vector $\mv q = (x, y, z, \alpha, \theta)^\top$, where $\mv q_t = (x, y, z)^\top$ defines the location in the $\mathbb R^3$ space, $\alpha$ is the scale parameter for the robots, and $\theta$ is the orientation of the formation about the $Z$-axis. The location of the individual robots in the world coordinate system can now be written as $\mv p_j = \mv q_t + \mv R \alpha \vsj$, where $\mv R$ is the rotation matrix corresponding to a rotation by an angle $\theta$ about the $Z$-axis. Given an initial and goal configuration, the task is then to compute an obstacle-free path in the environment.
 
 We assume the following:
 \begin{enumerate}
   \item The robots are holonomic, i.e., they can move in any direction.
   \item The position of the individual robots, and thereby the position and orientation of the robotic system can be obtained exactly.
+  \item The environment in 2D or 3D is static and known, i.e., the location of the obstacles are provided exactly.
   \item There is no error in the motion of the robots, i.e., the robots move exactly as commanded.
 \end{enumerate}
 
-We use Probabilistic Roadmap Method for 
+\subsection{Probabilistic Roadmap}
+We use Probabilistic Roadmap (PRM)~\cite{kavrakiSLO96} for creating a {\em roadmap} in the configuration space of the robot. 
+The roadmap here refers to an undirected graph in the configuration space where in the nodes represent configurations and the edges represent collision-free paths which the system of robots can take. 
+The weight of the edges represent the cost of travelling through the two nodes of the edge. 
+
+The PRM 
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibNmacro/agarwal_MP}
