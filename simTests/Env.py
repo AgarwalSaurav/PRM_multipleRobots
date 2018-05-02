@@ -105,7 +105,7 @@ class Env():
             if minSijY > self.eps:
                 self.scYMin = 2 * math.sqrt(2) * self.rad / minSijY
         self.scMax = max(2, self.scMin)
-        self.scB = [self.scMin, self.scMax]
+        self.scB = [self.scMin, 2*self.scMin]
         print('Minimum scale')
         print(self.scMin)
 

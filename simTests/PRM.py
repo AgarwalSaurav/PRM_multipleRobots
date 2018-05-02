@@ -12,7 +12,7 @@ from klampt import vis
 from klampt.model import trajectory
 
 class PRM():
-    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 15.5, localSteps = 20):
+    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 10.5, localSteps = 20):
         print('Initializing PRM')
         self.maxSample = maxSample
         self.maxConnect = maxConnect
@@ -26,15 +26,20 @@ class PRM():
 
 
     def getSample(self):
-        x = self.envBounds[0][0] + random.random() * (self.envBounds[0][1] - self.envBounds[0][0])
-        y = self.envBounds[1][0] + random.random() * (self.envBounds[1][1] - self.envBounds[1][0])
-        z = self.envBounds[2][0] + random.random() * (self.envBounds[2][1] - self.envBounds[2][0])
-        #z = 0.2
-        sc = self.envBounds[3][0] + random.random() * (self.envBounds[3][1] - self.envBounds[3][0])
-        #sc = 1
-        tht = random.random() * (2 * math.pi)
-        #tht = 0
-        newNode = nd(x, y, z, sc, tht)
+        validFlag = False
+        while not validFlag:
+            x = self.envBounds[0][0] + random.random() * (self.envBounds[0][1] - self.envBounds[0][0])
+            y = self.envBounds[1][0] + random.random() * (self.envBounds[1][1] - self.envBounds[1][0])
+            z = self.envBounds[2][0] + random.random() * (self.envBounds[2][1] - self.envBounds[2][0])
+            #z = 0.2
+            sc = self.envBounds[3][0] + random.random() * (self.envBounds[3][1] - self.envBounds[3][0])
+            #sc = 1
+            tht = random.random() * (2 * math.pi)
+            #tht = 0
+            self.env.setConfig(x, y, z, sc, tht)
+            if not self.env.checkCollision():
+                newNode = nd(x, y, z, sc, tht)
+                validFlag = True
         return newNode
     
     def distMetric(self, n1, n2):
