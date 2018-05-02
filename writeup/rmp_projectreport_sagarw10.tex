@@ -12,6 +12,7 @@
 %\usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage{graphics,graphicx}
+%\usepackage{subfigure}
 %\usepackage{subcaption}
 %\usepackage{xspace}
 %\usepackage{qtree} % check if needed 
@@ -346,6 +347,19 @@ short-circuited}. This approach has been found to be effective for several envir
   and the final configuration in red. Smoothing procedure has been applied to the path to
 obtain shorter paths.}
   \label{fig:pathS}
+\end{figure}
+
+
+\begin{figure}[bpt]
+  \centerline{\includegraphics[width=0.45\textwidth]{lPath_start.png} %\hspace{0.01in} 
+  \includegraphics[width=0.45\textwidth]{lPath_mid0.png}} \vspace{0.05in}
+  \centerline{\includegraphics[width=0.45\textwidth]{lPath_mid.png} %\hspace{0.01in} 
+  \includegraphics[width=0.45\textwidth]{lPath_end.png}}
+  \caption{Path shown for 10 robots. The initial configuration is marked in blue and the
+  final configuration is marked in red. The blue and and red lines show the path joining
+the respective configurations to the roadmap. The final path is smoothened. Note that the
+scale and orientation of the formation is also changing.}
+  \label{fig:ten}
 \end{figure}
 
 

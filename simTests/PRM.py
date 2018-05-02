@@ -161,7 +161,7 @@ class PRM():
             fName = "a" + str(cnt)
             vis.add(fName,tr)
             vis.hideLabel(fName)
-            vis.setAttribute(fName,"width",2)
+            vis.setAttribute(fName,"width",0.5)
             vis.setColor(fName, 0.4940, 0.1840, 0.5560)
             cnt = cnt + 1
         self.rmCnt = cnt
