@@ -12,7 +12,7 @@ from klampt import vis
 from klampt.model import trajectory
 
 class PRM():
-    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 0.5, localSteps = 20):
+    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 15.5, localSteps = 20):
         print('Initializing PRM')
         self.maxSample = maxSample
         self.maxConnect = maxConnect

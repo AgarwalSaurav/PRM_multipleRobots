@@ -225,7 +225,8 @@ The constant $\mv s$ can be precomputed.
 \subsubsection{Rotation}
 When the formation rotates by an angle $\theta$ about the $Z$-axis, the motion of the individual robots is in a arc of radius given by the distance of its position $\mv s_j$  in the shape in local coordinate system of the formation. The scaling distance metric $d_\theta(\mv q_1, \mv q_2)$ is then given by:
 \begin{equation}
-  d_\theta(\mv q_1, \mv q_2) = \sum_{i=1}^n \operatorname{abs}(\theta_1 - \theta_2) ||\mv s_i||_2 = \mv s (\alpha_1 - \alpha_2) 
+  d_\theta(\mv q_1, \mv q_2) = \sum_{i=1}^n \operatorname{abs}(\theta_1 - \theta_2) ||\mv
+  s_i||_2 = \mv s |\theta_1 - \theta_2| 
   \label{eqn:dth}
 \end{equation}
 \subsubsection{Rotation with Scaling}
@@ -260,12 +261,12 @@ is computationally expensive. Hence, an approximation is used by taking the aver
 radius. The distance function $d_{s\theta}(\mv q_1, \mv q_2)$ is given by:
 \begin{equation}
   \begin{split}
-    d_{s\theta}(\mv q_1, \mv q_2) &= \sum_{i=1}^n\operatorname{abs} \left(\frac{(r_{i1} -
+    d_{s\theta}(\mv q_1, \mv q_2) &= \sum_{i=1}^n\operatorname{abs} \left(\frac{(r_{i1} +
       r_{i2})}{2}(\theta_1 -
     \theta_2)\right ) \\
     &=\sum_{i=1}^n \operatorname{abs}\left( ||\mv s_i|| \frac{(\alpha_1
-    -\alpha_2)}{2}(\theta_1-\theta_2) \right)\\
-    &=\frac{\mv s \left|  (\alpha_1 -\alpha_2)(\theta_1-\theta_2) \right|}{2}
+    +\alpha_2)}{2}(\theta_1-\theta_2) \right)\\
+    &=\frac{\mv s  (\alpha_1 +\alpha_2)\left |\theta_1-\theta_2 \right|}{2}
   \end{split}
   \label{eqn:dsthta}
 \end{equation}
@@ -305,6 +306,48 @@ the graph and reduces the number of edges. A sample roadmap is shown in
 which remain disconnected.}
   \label{fig:roadmap}
 \end{figure}
+\subsubsection{The Expansion Step}
+In the expansion step, the connectivity of the graph is improved. This is done by locating
+connected components which are `difficult' based on some heuristic. It can correspond to
+regions of narrow passages. The size of the connected component is used as a simple
+heuristic for the project. Once such components are identified, nodes at random are
+selected from these components. Then a random walk is implemented. The system of robots
+move in a random direction for some distance or until hit by an object. Then the direction
+is changed. The random walk is run for a specified duration. A new node is added
+corresponding to the random walk. The path taken by the system of robots need to be added
+to as it is obtained in a non-deterministic way.
+
+\subsection{Query Phase}
+In the query phase, an initial configuration~$\mv q_i$ and a goal configuration~$\mv q_g$
+are provided. The algorithm then tries to connect to the closest node in the roadmap for
+each of these configurations. If the two nodes can be connected to the roadmap, shortest
+path is found between the connected nodes in the roadmap. 
+
+The path obtained can be improved upon by applying a smoothing procedure. Two techniques
+are used in this project:
+\subsubsection{Greedy Approach}
+First it is checked if $\mv q_i$ and $\mv q_g$ can be connected directly. If such a path
+exists, the function simply returns the direct path.
+
+If the configurations cannot be directly connected, a greedy approach is employed to
+connect first node to the end node, if successful the path is shortened by directly
+joining these nodes. If not the next node is checked with the last node and so on. This
+greatly reduces the path taken by the system of robots.
+
+\subsubsection{Random Approach}
+A random approach is augmented with the greedy approach. Two nodes in the shortest path are checked
+if they can be directly connected. If a collision-free path exists, the nodes are {\em
+short-circuited}. This approach has been found to be effective for several environments.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{path_single.png}
+  \caption{A sample path for a single robot. The initial configuration is shown in blue
+  and the final configuration in red. Smoothing procedure has been applied to the path to
+obtain shorter paths.}
+  \label{fig:pathS}
+\end{figure}
+
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibNmacro/agarwal_MP}
