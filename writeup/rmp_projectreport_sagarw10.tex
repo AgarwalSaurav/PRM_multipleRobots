@@ -361,7 +361,60 @@ the respective configurations to the roadmap. The final path is smoothened. Note
 scale and orientation of the formation is also changing.}
   \label{fig:ten}
 \end{figure}
+\section{Experiments}
+Running time experiments were performed to understand the variation in running time with
+the number of robots (1--10). The environment for the experiment is shown in~\fgref{fig:env}. The
+number of samples were fixed to 2000. The maximum number of nodes to connect  from a new
+sample was set to 15. The neighbor hood distance was 0.75 times the number of robots. The
+sampling for collision detection was set to a distance of 0.04. The query time was
+averaged over 100 random queries. There were at the most 1 failure. It can be seen from
+the plots that the running time in learning phase increases with increase in the number of robots. However,
+the increase is not very steep. The number of nodes not connected to any other node also
+increases with number of robots. This is because the size of the formation increases and
+it becomes more difficult to connect configurations using collision-free path.
 
+One interesting plot is of running time of query phase. The running time first increases
+with the number of robots and then decreases. The running time is more for
+3--6 number of robots. This is because of the neighborhood distance is small 
+which causes the shortest path composed of several very small
+segments. The complexity of the smoothing process is proportional to the number of
+segments in the shortest path. Hence, the running time increases for smaller number of
+robots. The running time increases for 1--4 robots because the collision detection is
+implemented to ensure the paths are collision free.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{env.png}
+  \caption{Environment setup for the experiments}
+  \label{fig:env}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim={4cm 0 4cm 0},clip]{lT_plot.png}
+  \caption{Variation of running time of learning phase with number of robots. }
+  \label{fig:lT}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim={4cm 0 4cm 0},clip]{qT_plot.png}
+  \caption{Variation of running time of query phase with number of robots. }
+  \label{fig:qT}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim={4cm 0 4cm 0},clip]{cc_plot.png}
+  \caption{Variation of number of connected components with number of robots. }
+  \label{fig:cc}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth, trim={4cm 0 4cm 0},clip]{ccn_plot.png}
+  \caption{Variation of number of unconnected nodes with number of robots. }
+  \label{fig:ccn}
+\end{figure}
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibNmacro/agarwal_MP}
