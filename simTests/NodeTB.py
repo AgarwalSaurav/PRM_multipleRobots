@@ -1,11 +1,12 @@
 class NodeTB():
-    def __init__(self, x, y, tht, u1, u2, dt):
+    def __init__(self, x, y, tht, u1, u2, T, parent):
         self.x = x
         self.y = y
         self.tht = tht
         self.u1 = u1
         self.u2 = u2
-        self.dt = dt
+        self.T = T
+        self.parent = parent
     
     def setnode(self, x, y, tht, u1, u2, dt):
         self.x = x
@@ -13,7 +14,7 @@ class NodeTB():
         self.tht = tht
         self.u1 = u1
         self.u2 = u2
-        self.dt = dt
+        self.T = T
 
     def printNode(self):
         print('x = '+ str(self.x))
@@ -21,6 +22,5 @@ class NodeTB():
         print('tht = '+ str(self.tht))
         print('u1 = '+ str(self.u1))
         print('u2 = '+ str(self.u2))
-        print('dt = '+ str(self.dt))
-
+        print('T = '+ str(self.T))
 

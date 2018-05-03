@@ -49,13 +49,13 @@ def getDoubleRoomDoor(world, dimX, dimY, dimZ, color = [0.85, 0.85, 0.85, 1], wa
     w2 = getWall(wall_thickness, dimY, dimZ, [-x2, -y2, 0], 0)
     w3 = getWall(dimX, wall_thickness, dimZ, [-x2, y2, 0], 0)
     w4 = getWall(wall_thickness, dimY, dimZ, [x2, -y2, 0], 0)
-    w5 = getWall(3*x8, wall_thickness, dimZ, [-x2, 0, 0], 0)
-    w6 = getWall(3*x8, wall_thickness, dimZ, [x8, 0, 0], 0)
+    w5 = getWall(3*x8, 40*wall_thickness, dimZ, [-x2, -wall_thickness*20, 0], 0)
+    w6 = getWall(3*x8,40* wall_thickness, dimZ, [x8, wall_thickness*20, 0], 0)
     DRDgeom = Geometry3D()
     DRDgeom.setGroup()
     for i,elem in enumerate([w1, w2, w3, w4, w5, w6]):
 	DRDgeom.setElement(i,elem)
-    drd_setup = world.makeTerrain("DRD")
+    drd_setup = world.makeRigidObject("DRD")
     drd_setup.geometry().set(DRDgeom)
     r = color[0]
     g = color[1]
