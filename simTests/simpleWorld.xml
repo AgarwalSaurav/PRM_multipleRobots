@@ -25,6 +25,8 @@
   <robot name="7" file="../mobile_robots/sphero/sphero.rob" /> 
   <robot name="8" file="../mobile_robots/sphero/sphero.rob" /> 
   <robot name="9" file="../mobile_robots/sphero/sphero.rob" /> 
+  <!-- 
+  -->
   <!-- Provide the location to the terrain file, the scale, the position 
        The default size for block.off is 4 X 4 X 0.1. Scale it accordingly -->
 

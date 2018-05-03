@@ -12,14 +12,14 @@ from klampt import vis
 from klampt.model import trajectory
 
 class PRM():
-    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 10.5, localSteps = 20):
+    def __init__(self, env, maxSample = 2000, maxConnect = 15, maxDist = 0.5, localSteps = 20):
         print('Initializing PRM')
         self.maxSample = maxSample
         self.maxConnect = maxConnect
-        self.maxDist = maxDist
         self.G = nx.Graph()
         self.envBounds = env.getBounds()
         self.env = env
+        self.maxDist = maxDist * 1.5*self.env.n
         self.localSteps = localSteps
         self.pathCnt = 0
         self.rmCnt = 0
@@ -67,8 +67,6 @@ class PRM():
             colFlag = self.env.checkCollision()
             if (colFlag):
                 return False
-            if sleepFlag:
-                time.sleep(vel/2)
         self.env.setConfig(n2.x, n2.y, n2.z, n2.sc, n2.tht)
         return True
 
@@ -152,7 +150,7 @@ class PRM():
 
     def visRoadMap(self):
 
-        vis.show()
+        #vis.show()
 
         edgeList = self.G.edges()
         cnt = 0
@@ -173,41 +171,19 @@ class PRM():
             
     def queryPRM(self, qI, qG):
 
-        vis.show()
+        #vis.show()
         vis.lock()
-        vis.add("Initial", [qI.x, qI.y, qI.z])
-        vis.setAttribute("Initial", "size", 14)
-        vis.setColor("Initial",0, 0.4470, 0.7410)
-        vis.add("Goal", [qG.x, qG.y, qG.z])
-        vis.setAttribute("Goal", "size", 14)
-        vis.setColor("Goal", 0.8500, 0.3250, 0.0980)
         vis.unlock()
         vis.show(False)
 
         if(self.localPlanner(qI, qG)):
             print("Direct path found")
             cnt = 0
-            tr = trajectory.Trajectory()
-            tr.milestones.append([qI.x, qI.y, qI.z])
-            tr.milestones.append([qG.x, qG.y, qG.z])
-            fName = "p" + str(cnt)
-            vis.add(fName,tr)
-            vis.hideLabel(fName)
-            vis.setColor(fName,0, 0.4470, 0.7410)
             cnt = cnt + 1
             self.pathCnt = cnt
             flagIn = True
             self.env.setConfig(qI.x, qI.y, qI.z, qI.sc, qI.tht)
-            vis.show()
-            while(flagIn):
-                inText = ''
-                while not (inText == 'y' or inText =='n'):
-                    inText = raw_input("Run Path (y/n) ?")
-                if inText == 'n':
-                    flagIn = False
-                    break
-                if inText == 'y':
-                    self.localPlanner(qI, qG, True)
+            #vis.show()
             return True
 
         self.pathCnt = 0
@@ -243,56 +219,10 @@ class PRM():
             return False
         
         shortest_path = self.smoothPath(shortest_path)
-        vis.show()
+        #vis.show()
         
         cnt = 0
-        tr = trajectory.Trajectory()
-        tr.milestones.append([qI.x, qI.y, qI.z])
-        tr.milestones.append([minNodeI.x, minNodeI.y, minNodeI.z])
-        fName = "p" + str(cnt)
-        vis.add(fName,tr)
-        vis.hideLabel(fName)
-        vis.setColor(fName,0, 0.4470, 0.7410)
-        cnt = cnt + 1
 
-        prevNode = None
-        for nodeP in shortest_path:
-            if prevNode == None:
-                prevNode = nodeP
-                continue
-            tr = trajectory.Trajectory()
-            tr.milestones.append([prevNode.x, prevNode.y, prevNode.z])
-            tr.milestones.append([nodeP.x, nodeP.y, nodeP.z])
-            prevNode = nodeP
-            fName = "p" + str(cnt)
-            vis.add(fName,tr)
-            vis.hideLabel(fName)
-            vis.setColor(fName, 0.4660, 0.6740, 0.1880)
-            cnt = cnt + 1
-
-        tr = trajectory.Trajectory()
-        tr.milestones.append([qG.x, qG.y, qG.z])
-        tr.milestones.append([minNodeG.x, minNodeG.y, minNodeG.z])
-        fName = "p" + str(cnt)
-        vis.add(fName,tr)
-        vis.hideLabel(fName)
-        #vis.setAttribute(fName,"width",1.0)
-        vis.setColor(fName, 0.8500, 0.3250, 0.0980)
-        cnt = cnt + 1
-        self.pathCnt = cnt
-
-        flagIn = True
-        self.env.setConfig(qI.x, qI.y, qI.z, qI.sc, qI.tht)
-        vis.show()
-        while(flagIn):
-            inText = ''
-            while not (inText == 'y' or inText =='n'):
-                inText = raw_input("Run Path (y/n) ?")
-            if inText == 'n':
-                flagIn = False
-                break
-            if inText == 'y':
-                self.runPath(qI, minNodeI, minNodeG, qG, shortest_path)
         return True
 
     def deletePath(self):
@@ -389,7 +319,7 @@ class PRM():
 
 
     def runPath(self, qI, minNodeI, minNodeG, qG, shortest_path):
-        time.sleep(1)
+        #time.sleep(1)
         self.localPlanner(qI, minNodeI, True)
         prevNode = None
         for nodeP in shortest_path:
@@ -399,7 +329,7 @@ class PRM():
             self.localPlanner(prevNode, nodeP, True)
             prevNode = nodeP
         self.localPlanner(minNodeG, qG, True)
-        time.sleep(1)
+        #time.sleep(1)
     
 
 
