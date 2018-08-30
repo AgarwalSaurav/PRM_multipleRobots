@@ -4,7 +4,7 @@ Please download latest version using
 ```
 git clone https://github.com/AgarwalSaurav/PRM_multipleRobots.git
 ```
-
+The project uses Klamp't http://motion.pratt.duke.edu/klampt/ 
 ### Execution:
 ```
 cd simTests
